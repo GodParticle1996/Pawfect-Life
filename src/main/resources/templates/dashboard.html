@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Dashboard - Pet Supply</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <nav>
+      <a th:href="@{/dashboard}">Dashboard</a>
+      <a th:href="@{/account}">Account</a>
+      <a th:href="@{/deals}">Deals</a>
+      <a th:href="@{/cart}">Cart</a>
+      <a th:href="@{/logout}">Logout</a>
+    </nav>
+    <div class="container">
+      <h2>Welcome to Pet Supply</h2>
+      <p>Shop our latest pet products!</p>
+      <div class="placeholder-img"></div>
+    </div>
+  </body>
+</html>
