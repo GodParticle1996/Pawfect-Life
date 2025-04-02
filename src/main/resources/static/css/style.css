@@ -1,3 +1,4 @@
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -7,10 +8,131 @@
 
 body {
   background: #f4f4f9;
+  min-height: 100vh;
+}
+
+.navbar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  background: linear-gradient(90deg, #2c3e50, #3498db);
+  color: #fff;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: "Pacifico", cursive;
+}
+
+.navbar .logo a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar .logo a:hover {
+  color: #ffcc00;
+}
+
+.navbar .nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+  color: #ffcc00;
+}
+
+.navbar .nav-links a.active {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.navbar .nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: #ffcc00;
+  bottom: -4px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.navbar .nav-links a:hover::after,
+.navbar .nav-links a.active::after {
+  width: 100%;
+}
+
+.navbar .nav-links-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .nav-links-right .cart,
+.navbar .nav-links-right .account {
+  position: relative;
+  margin-left: 1.5rem;
+}
+
+.navbar .nav-links-right i {
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.navbar .nav-links-right i:hover {
+  transform: scale(1.1);
+}
+
+/* Dropdown Menu */
+.navbar .account {
+  position: relative;
+}
+
+.navbar .account .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 150%;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  min-width: 120px;
+  z-index: 1000;
+}
+
+.navbar .account .dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.navbar .account .dropdown-menu a:hover {
+  background: #f4f4f9;
+  color: #007bff;
+  border-radius: 5px;
 }
 
 .container {
@@ -20,6 +142,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 350px;
   text-align: center;
+  margin: 80px auto 20px auto; /* Adjusted for fixed navbar */
 }
 
 h2 {
@@ -76,42 +199,6 @@ button:hover {
   margin-bottom: 1rem;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #007bff;
-  color: #fff;
-  padding: 1rem 2rem;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.navbar .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.navbar .nav-links a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 1rem;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-}
-
-.navbar .nav-links a:hover {
-  color: #ffcc00;
-}
-
-.navbar .account img {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
-
 .signup-link,
 .login-link {
   margin-top: 1rem;
@@ -129,4 +216,11 @@ button:hover {
 .signup-link a:hover,
 .login-link a:hover {
   color: #0056b3;
+}
+
+.placeholder-img {
+  width: 200px;
+  height: 200px;
+  background-color: #ddd;
+  margin: 10px auto;
 }

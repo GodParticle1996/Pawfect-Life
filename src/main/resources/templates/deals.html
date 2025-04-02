@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Deals - Pawfect Life</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <a th:href="@{/dashboard}">PawfectLife</a>
+      </div>
+      <div class="nav-links">
+        <a
+          th:href="@{/dashboard}"
+          th:class="${#httpServletRequest.requestURI == '/dashboard'} ? 'active' : ''"
+          >Home</a
+        >
+        <a
+          th:href="@{/deals}"
+          th:class="${#httpServletRequest.requestURI == '/deals'} ? 'active' : ''"
+          >Deals</a
+        >
+      </div>
+      <div class="nav-links-right">
+        <div class="cart">
+          <a th:href="@{/cart}">
+            <i class="fas fa-shopping-cart"></i>
+          </a>
+        </div>
+        <div class="account">
+          <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-user"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a th:href="@{/account}">Account</a>
+            <a th:href="@{/logout}">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Deals Content -->
+    <div class="container">
+      <h2>Deals</h2>
+      <p>Check out our latest deals on pet supplies!</p>
+    </div>
+
+    <script>
+      function toggleDropdown(event) {
+        event.preventDefault();
+        const dropdown = event.currentTarget.nextElementSibling;
+        dropdown.style.display =
+          dropdown.style.display === "block" ? "none" : "block";
+      }
+
+      document.addEventListener("click", function (event) {
+        const dropdowns = document.querySelectorAll(".dropdown-menu");
+        const toggles = document.querySelectorAll(".account-toggle");
+        if (
+          !Array.from(toggles).some((toggle) => toggle.contains(event.target))
+        ) {
+          dropdowns.forEach((dropdown) => {
+            dropdown.style.display = "none";
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
