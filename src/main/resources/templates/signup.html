@@ -5,10 +5,6 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body>
-    <nav>
-      <a th:href="@{/login}">Login</a>
-      <a th:href="@{/signup}">Signup</a>
-    </nav>
     <div class="container">
       <h2>Signup</h2>
       <div th:if="${error}" class="error" th:text="${error}"></div>
@@ -33,6 +29,10 @@
         </div>
         <button type="submit">Signup</button>
       </form>
+      <!-- Redirect to Login Page -->
+      <p class="login-link">
+        Already have an account? <a th:href="@{/login}">Login</a>
+      </p>
     </div>
   </body>
 </html>
