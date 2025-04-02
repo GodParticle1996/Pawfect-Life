@@ -52,14 +52,9 @@ public class PetSupplyController {
         return "account";
     }
 
-    @GetMapping("/deals")
-    public String deals() {
-        return "deals";
-    }
-
-    @GetMapping("/product")
-    public String product() {
-        return "product";
+    @GetMapping("/products")
+    public String products() {
+        return "products";
     }
 
     @GetMapping("/cart")
