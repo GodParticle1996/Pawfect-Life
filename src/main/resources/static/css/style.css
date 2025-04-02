@@ -140,9 +140,10 @@ body {
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 350px;
+  width: 100%;
+  height: calc(100vh - 125px);
   text-align: center;
-  margin: 80px auto 20px auto; /* Adjusted for fixed navbar */
+  margin-top: 125px;
 }
 
 h2 {

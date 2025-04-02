@@ -16,19 +16,16 @@
     <!-- Navbar -->
     <nav class="navbar">
       <div class="logo">
-        <a th:href="@{/dashboard}">PawfectLife</a>
+        <a th:href="@{/dashboard}"
+          ><img
+            src="/images/logo.png"
+            alt="PawfectLife Logo"
+            style="width: 250px; height: 80px; object-fit: cover"
+        /></a>
       </div>
       <div class="nav-links">
-        <a
-          th:href="@{/dashboard}"
-          th:class="${#httpServletRequest.requestURI == '/dashboard'} ? 'active' : ''"
-          >Home</a
-        >
-        <a
-          th:href="@{/deals}"
-          th:class="${#httpServletRequest.requestURI == '/deals'} ? 'active' : ''"
-          >Deals</a
-        >
+        <a th:href="@{/dashboard}">Home</a>
+        <a th:href="@{/products}">Products</a>
       </div>
       <div class="nav-links-right">
         <div class="cart">

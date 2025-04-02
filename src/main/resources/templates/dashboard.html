@@ -16,11 +16,16 @@
     <!-- Navbar -->
     <nav class="navbar">
       <div class="logo">
-        <a th:href="@{/dashboard}">PawfectLife</a>
+        <a th:href="@{/dashboard}"
+          ><img
+            src="/images/logo.png"
+            alt="PawfectLife Logo"
+            style="width: 250px; height: 80px; object-fit: cover"
+        /></a>
       </div>
       <div class="nav-links">
         <a th:href="@{/dashboard}">Home</a>
-        <a th:href="@{/deals}">Deals</a>
+        <a th:href="@{/products}">Products</a>
       </div>
       <div class="nav-links-right">
         <div class="cart">
@@ -33,8 +38,8 @@
             <i class="fas fa-user"></i>
           </a>
           <div class="dropdown-menu">
-            <a class="a-account" th:href="@{/account}">Account</a>
-            <a class="a-logout" th:href="@{/logout}">Logout</a>
+            <a th:href="@{/account}">Account</a>
+            <a th:href="@{/logout}">Logout</a>
           </div>
         </div>
       </div>
