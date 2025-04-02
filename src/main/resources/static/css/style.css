@@ -17,7 +17,7 @@ body {
   align-items: center;
   background: linear-gradient(90deg, #2c3e50, #3498db);
   color: #fff;
-  padding: 1rem 2rem;
+  padding: 1rem 2rem 0 1rem;
   position: fixed;
   top: 0;
   width: 100%;
@@ -41,12 +41,7 @@ body {
   color: #ffcc00;
 }
 
-.navbar .nav-links {
-  display: flex;
-  align-items: center;
-}
-
-.navbar .nav-links a {
+.navbar .nav-links-right a {
   color: #fff;
   text-decoration: none;
   margin: 0 1.5rem;
@@ -56,16 +51,16 @@ body {
   transition: color 0.3s ease;
 }
 
-.navbar .nav-links a:hover {
+.navbar .nav-links-right a:hover {
   color: #ffcc00;
 }
 
-.navbar .nav-links a.active {
+.navbar .nav-links-right a.active {
   color: #ffcc00;
   font-weight: bold;
 }
 
-.navbar .nav-links a::after {
+.navbar .nav-links-right a::after {
   content: "";
   position: absolute;
   width: 0;
@@ -76,8 +71,8 @@ body {
   transition: width 0.3s ease;
 }
 
-.navbar .nav-links a:hover::after,
-.navbar .nav-links a.active::after {
+.navbar .nav-links-right a:hover::after,
+.navbar .nav-links-right a.active::after {
   width: 100%;
 }
 
@@ -144,6 +139,17 @@ body {
   height: calc(100vh - 125px);
   text-align: center;
   margin-top: 125px;
+}
+
+.auth-container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: 380px;
+  text-align: center;
+  margin: 300px auto 0 auto;
 }
 
 h2 {
