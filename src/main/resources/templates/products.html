@@ -47,7 +47,7 @@
 
     <!-- Notification toast -->
     <div id="notification-toast" class="notification-toast">
-      <span id="notification-message">Item added to cart!</span>
+      <span id="notification-message">Item added to cart</span>
     </div>
 
     <!-- Products Content -->
@@ -155,7 +155,7 @@
               const productName =
                 this.closest(".product-card").querySelector("h3").textContent;
               const quantity = this.querySelector(".quantity-input").value;
-              showNotification(`Added ${quantity} ${productName} to cart!`);
+              showNotification(`Added ${quantity} ${productName} to cart`);
 
               // Update cart badge count (will be updated on page refresh or we can update via AJAX)
               setTimeout(() => {
