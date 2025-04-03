@@ -6,8 +6,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,36 +13,62 @@ import java.util.Map;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CartService {
 
-    private final Map<Product, Integer> cart = new HashMap<>();
+    private Map<Product, Integer> cart = new HashMap<>();
 
-    /**
-     * Adds a product to the cart or increments its quantity
-     */
     public void addProduct(Product product) {
-        cart.merge(product, 1, Integer::sum);
+        // Find if a product with the same ID already exists in the cart
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            // If the product exists, update its quantity
+            int newQuantity = cart.get(existingProduct) + 1;
+            cart.put(existingProduct, newQuantity);
+        } else {
+            // If the product doesn't exist, add it with quantity 1
+            cart.put(product, 1);
+        }
+    }
+
+    public void addProductWithQuantity(Product product, int quantity) {
+        // Find if a product with the same ID already exists in the cart
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            // If the product exists, update its quantity
+            int newQuantity = cart.get(existingProduct) + quantity;
+            cart.put(existingProduct, newQuantity);
+        } else {
+            // If the product doesn't exist, add it with the specified quantity
+            cart.put(product, quantity);
+        }
     }
 
     public void removeProduct(Product product) {
-        cart.remove(product);
-    }
+        // Find the product with the same ID
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
 
-    public void updateQuantity(Product product, int quantity) {
-        if (quantity > 0) {
-            cart.put(product, quantity);
-        } else {
-            removeProduct(product);
+        if (existingProduct != null) {
+            cart.remove(existingProduct);
         }
     }
 
     public Map<Product, Integer> getProductsInCart() {
-        return Collections.unmodifiableMap(cart);
+        return cart;
     }
 
-    public BigDecimal getTotal() {
+    public double getTotal() {
         return cart.entrySet().stream()
-                .map(entry -> BigDecimal.valueOf(entry.getKey().getPrice())
-                        .multiply(BigDecimal.valueOf(entry.getValue())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                .sum();
     }
 
     public int getItemCount() {
@@ -53,5 +77,21 @@ public class CartService {
 
     public void clearCart() {
         cart.clear();
+    }
+
+    public void updateProductQuantity(Product product, int quantity) {
+        // Find the product with the same ID
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            if (quantity <= 0) {
+                cart.remove(existingProduct);
+            } else {
+                cart.put(existingProduct, quantity);
+            }
+        }
     }
 }

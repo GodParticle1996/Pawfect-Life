@@ -78,14 +78,22 @@ public class PetSupplyController {
     public String products(Model model) {
         List<Product> products = productRepository.findAll();
         model.addAttribute("products", products);
+        model.addAttribute("cartItemCount", cartService.getItemCount());
         return "products";
     }
 
     @PostMapping("/cart/add")
-    public String addToCart(@RequestParam Long productId) {
+    public String addToCart(@RequestParam Long productId, @RequestParam(defaultValue = "1") int quantity) {
         Product product = productService.getProductById(productId);
-        cartService.addProduct(product);
+        cartService.addProductWithQuantity(product, quantity); // Use the new method
         return "redirect:/products";
+    }
+
+    @PostMapping("/cart/update")
+    public String updateCart(@RequestParam Long productId, @RequestParam int quantity) {
+        Product product = productService.getProductById(productId);
+        cartService.updateProductQuantity(product, quantity);
+        return "redirect:/cart";
     }
 
     @GetMapping("/cart")
