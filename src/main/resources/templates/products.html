@@ -45,6 +45,11 @@
       </div>
     </nav>
 
+    <!-- Notification toast -->
+    <div id="notification-toast" class="notification-toast">
+      <span id="notification-message">Item added to cart!</span>
+    </div>
+
     <!-- Products Content -->
     <div class="product-container">
       <h2>Our Products</h2>
@@ -54,30 +59,51 @@
         <div class="product-card" th:each="product : ${products}">
           <div class="product-image-container">
             <img
-             th:src="@{'/' + ${product.imageUrl}}"
-             th:alt="${product.productName} + ' image'"
-             class="product-image"
+              th:src="@{'/' + ${product.imageUrl}}"
+              th:alt="${product.productName} + ' image'"
+              class="product-image"
             />
           </div>
           <div class="product-info">
             <h3 th:text="${product.productName}">Product Name</h3>
             <p
-             class="price"
-             th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"
+              class="price"
+              th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"
             >
-            Price
-          </p>
-          <form th:action="@{/cart/add}" method="post">
-            <input type="hidden" name="productId" th:value="${product.id}" />
-            <button class="add-to-cart">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </form>
+              Price
+            </p>
+            <form
+              th:action="@{/cart/add}"
+              method="post"
+              class="add-to-cart-form"
+            >
+              <input type="hidden" name="productId" th:value="${product.id}" />
+              <div class="quantity-selector">
+                <label for="quantity">Qty:</label>
+                <div class="quantity-control" style="border: 0px">
+                  <button type="button" class="quantity-btn minus">-</button>
+                  <input
+                    type="number"
+                    name="quantity"
+                    class="quantity-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                  />
+                  <button type="button" class="quantity-btn plus">+</button>
+                </div>
+              </div>
+              <button type="submit" class="add-to-cart">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
+      // Dropdown toggle functionality
       function toggleDropdown(event) {
         event.preventDefault();
         const dropdown = event.currentTarget.nextElementSibling;
@@ -96,6 +122,63 @@
           });
         }
       });
+
+      // Quantity selector functionality
+      document.querySelectorAll(".quantity-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const input = this.parentNode.querySelector(".quantity-input");
+          const currentValue = parseInt(input.value);
+
+          if (this.classList.contains("plus")) {
+            input.value = Math.min(currentValue + 1, 99);
+          } else if (this.classList.contains("minus")) {
+            input.value = Math.max(currentValue - 1, 1);
+          }
+        });
+      });
+
+      // Form submission and notification
+      document.querySelectorAll(".add-to-cart-form").forEach((form) => {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          fetch(this.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          })
+            .then((response) => {
+              // Show notification
+              const productName =
+                this.closest(".product-card").querySelector("h3").textContent;
+              const quantity = this.querySelector(".quantity-input").value;
+              showNotification(`Added ${quantity} ${productName} to cart!`);
+
+              // Update cart badge count (will be updated on page refresh or we can update via AJAX)
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+      });
+
+      function showNotification(message) {
+        const toast = document.getElementById("notification-toast");
+        const messageEl = document.getElementById("notification-message");
+
+        messageEl.textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
     </script>
   </body>
   <footer class="company-footer">

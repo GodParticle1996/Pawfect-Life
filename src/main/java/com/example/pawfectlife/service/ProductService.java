@@ -12,13 +12,13 @@ import com.example.pawfectlife.repository.ProductRepository;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
-    
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 }

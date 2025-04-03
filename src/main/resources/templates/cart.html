@@ -56,10 +56,8 @@
 
       <div th:unless="${cartItems.isEmpty()}">
         <div class="cart-item" th:each="entry : ${cartItems}">
-          <img
-            th:src="@{'/images/products/' + ${entry.key.imageUrl}}"
-            alt="Product Image"
-          />
+          <!-- In cart.html, change this line -->
+          <img th:src="@{'/' + ${entry.key.imageUrl}}" alt="Product Image" />
           <div>
             <h3 th:text="${entry.key.productName}"></h3>
             <p
