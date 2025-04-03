@@ -46,23 +46,32 @@
     </nav>
 
     <!-- Products Content -->
-    <div class="container">
+    <div class="product-container">
       <h2>Our Products</h2>
       <p class="subtitle">Check out our latest pet supplies!</p>
 
-      <div class="product-grid" th:each="product : ${products}">
-        <div class="product-card">
-          <img
-            th:src="@{'/' + ${product.imageUrl}}"
-            th:alt="${product.name} + ' image'"
-          />
-          <h3 th:text="${product.name}">Product Name</h3>
-          <p
-            class="price"
-            th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"
-          >
+      <div class="product-grid">
+        <div class="product-card" th:each="product : ${products}">
+          <div class="product-image-container">
+            <img
+             th:src="@{'/' + ${product.imageUrl}}"
+             th:alt="${product.productName} + ' image'"
+             class="product-image"
+            />
+          </div>
+          <div class="product-info">
+            <h3 th:text="${product.productName}">Product Name</h3>
+            <p
+             class="price"
+             th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"
+            >
             Price
           </p>
+          <form th:action="@{/petsupply/cart/add/{id}(id=${product.id})}" method="post">
+            <button class="add-to-cart">
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -88,4 +97,12 @@
       });
     </script>
   </body>
+  <footer class="company-footer">
+    <div class="footer-content">
+      <p>© 2025 Pawfect Life. All Rights Reserved</p>
+      <p>PROG8610 - Developing Web Applications</p>
+      <p>Group #2: Vibek Dutta, Chunxi Zhang</p>
+      <p>Student ID: 8890720, 8971818</p>
+    </div>
+  </footer>
 </html>
