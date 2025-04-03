@@ -4,22 +4,15 @@
     <title>Login - Pawfect Life</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
-  <body>
+  <body style="background-color: #fed4af;">
     <div
-      class="main-container"
-      style="display: flex; background-color: #fed4af"
+      class="log-page-container"
     >
       <div class="bg-container">
         <img
-          src="/images/app-images/background.png"
-          alt="Background Image"
-          style="
-            width: 100%;
-            height: 100vh;
-            object-fit: cover;
-            position: relative;
-            left: 200px;
-          "
+        th:src="@{/images/app-images/background.png}" 
+        alt="Background Image" 
+        class="bg-image"
         />
       </div>
       <div class="auth-container">
@@ -50,5 +43,13 @@
         </p>
       </div>
     </div>
+    <footer class="company-footer">
+      <div class="footer-content">
+        <p>© 2025 Pawfect Life. All Rights Reserved</p>
+        <p>PROG8610 - Developing Web Applications</p>
+        <p>Group #2: Vibek Dutta, Chunxi Zhang</p>
+        <p>Student ID: 8890720, 8971818</p>
+      </div>
+    </footer>
   </body>
 </html>
