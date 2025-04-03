@@ -1,72 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <title>Products - Pawfect Life</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
     <!-- Navbar -->
     <nav class="navbar">
-      <div class="logo">
-        <a th:href="@{/dashboard}"
-          ><img
-            src="/images/logo.png"
-            alt="PawfectLife Logo"
-        /></a>
-      </div>
-      <div class="nav-links-right">
-        <a th:href="@{/dashboard}">Home</a>
-        <a th:href="@{/products}">Products</a>
-        <div class="cart">
-          <a th:href="@{/cart}">
-            <i class="fas fa-shopping-cart"></i>
-          </a>
+        <div class="logo">
+            <a th:href="@{/petsupply/dashboard}">
+                <img src="/images/logo.png" alt="PawfectLife Logo">
+            </a>
         </div>
-        <div class="account">
-          <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
-            <i class="fas fa-user"></i>
-          </a>
-          <div class="dropdown-menu">
-            <a th:href="@{/account}">Account</a>
-            <a th:href="@{/logout}">Logout</a>
-          </div>
+        <div class="nav-links-right">
+            <a th:href="@{/petsupply/dashboard}">Home</a>
+            <a th:href="@{/petsupply/products}">Products</a>
+            <div class="cart">
+              <a th:href="@{/cart}">
+                <i class="fas fa-shopping-cart"></i>
+                <span th:if="${cartItemCount > 0}" 
+                      th:text="${cartItemCount}"
+                      class="cart-badge"></span>
+            </a>
+            </div>
+            <div class="account">
+                <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a th:href="@{/account}">Account</a>
+                    <a th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
         </div>
-      </div>
     </nav>
 
     <!-- Products Content -->
     <div class="container">
-      <h2>Products</h2>
-      <p>Check out our latest products on pet supplies!</p>
+      <h2>Our Products</h2>
+      <p class="subtitle">Check out our latest pet supplies!</p>
+      
+      <div class="product-grid" th:each="product : ${products}">
+        <div class="product-card">
+            <img th:src="@{'/' + ${product.imageUrl}}" 
+                 th:alt="${product.name} + ' image'">
+            <h3 th:text="${product.name}">Product Name</h3>
+            <p class="price" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">Price</p>
+        </div>
     </div>
+  </div>
 
     <script>
-      function toggleDropdown(event) {
-        event.preventDefault();
-        const dropdown = event.currentTarget.nextElementSibling;
-        dropdown.style.display =
-          dropdown.style.display === "block" ? "none" : "block";
-      }
-
-      document.addEventListener("click", function (event) {
-        const dropdowns = document.querySelectorAll(".dropdown-menu");
-        const toggles = document.querySelectorAll(".account-toggle");
-        if (
-          !Array.from(toggles).some((toggle) => toggle.contains(event.target))
-        ) {
-          dropdowns.forEach((dropdown) => {
-            dropdown.style.display = "none";
-          });
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = event.currentTarget.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
-      });
+
+        document.addEventListener("click", function(event) {
+            const dropdowns = document.querySelectorAll(".dropdown-menu");
+            const toggles = document.querySelectorAll(".account-toggle");
+            if (!Array.from(toggles).some(toggle => toggle.contains(event.target))) {
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = "none";
+                });
+            }
+        });
     </script>
-  </body>
+</body>
 </html>

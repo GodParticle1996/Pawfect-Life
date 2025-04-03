@@ -17,20 +17,23 @@
     <!-- Main Navigation -->
     <nav class="navbar">
         <div class="logo">
-            <a th:href="@{/dashboard}">
+            <a th:href="@{/petsupply/dashboard}">
                 <img src="/images/logo.png" alt="PawfectLife Logo">
             </a>
         </div>
 
         <!-- Navigation Links -->
         <div class="nav-links-right">
-            <a th:href="@{/dashboard}">Home</a>
-            <a th:href="@{/products}">Products</a>
+            <a th:href="@{/petsupply/dashboard}">Home</a>
+            <a th:href="@{/petsupply/products}">Products</a>
             
             <!-- Shopping Cart -->
             <div class="cart">
                 <a th:href="@{/cart}">
                     <i class="fas fa-shopping-cart"></i>
+                    <span th:if="${cartItemCount > 0}" 
+                          th:text="${cartItemCount}"
+                          class="cart-badge"></span>
                 </a>
             </div>
             
@@ -52,7 +55,7 @@
       <div class="hero-content">
           <div class="hero-overlay">
               <h2>Welcome to Pawfect Life</h2>
-              <p>Your trusted destination for premium pet supplies! We believe every pet deserves the best—whether it’s wholesome food, cozy beds, or fun toys.</p>
+              <p>Your trusted destination for premium pet supplies! <br>We believe every pet deserves the best.</p>
               <a th:href="@{/signup}" class="cta-button">Make It Perfect Now →</a>
           </div>
       </div>
@@ -79,4 +82,12 @@
         });
     </script>
 </body>
+<footer class="company-footer">
+  <div class="footer-content">
+    <p>© 2025 Pawfect Life. All Rights Reserved</p>
+    <p>PROG8610 - Developing Web Applications </p>
+    <p>Group #2: Vibek Dutta, Chunxi Zhang</p>
+    <p>Student ID: 8890720, 8971818</p>
+  </div>
+</footer>
 </html>

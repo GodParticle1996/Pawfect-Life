@@ -27,7 +27,7 @@
         <div th:if="${param.success}" class="success">
           Signup successful! Please login.
         </div>
-        <form method="post" th:action="@{/login}">
+        <form method="post" th:action="@{/petsupply/login}">
           <div class="form-group">
             <label>Email:</label>
             <input type="email" name="username" required />
