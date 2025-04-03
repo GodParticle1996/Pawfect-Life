@@ -17,21 +17,21 @@
     <nav class="navbar">
       <div class="logo">
         <a th:href="@{/petsupply/dashboard}"
-          ><img
-            src="/images/logo.png"
-            alt="PawfectLife Logo"
+          ><img src="/images/logo.png" alt="PawfectLife Logo"
         /></a>
       </div>
       <div class="nav-links-right">
         <a th:href="@{/petsupply/dashboard}">Home</a>
         <a th:href="@{/petsupply/products}">Products</a>
         <div class="cart">
-          <a th:href="@{/cart}">
+          <a th:href="@{/petsupply/cart}">
             <i class="fas fa-shopping-cart"></i>
-            <span th:if="${cartItemCount > 0}" 
-                  th:text="${cartItemCount}"
-                  class="cart-badge"></span>
-        </a>
+            <span
+              th:if="${cartItemCount > 0}"
+              th:text="${cartItemCount}"
+              class="cart-badge"
+            ></span>
+          </a>
         </div>
         <div class="account">
           <a href="#" class="account-toggle" onclick="toggleDropdown(event)">

@@ -17,21 +17,21 @@
     <nav class="navbar">
       <div class="logo">
         <a th:href="@{/petsupply/dashboard}"
-          ><img
-            src="/images/logo.png"
-            alt="PawfectLife Logo"
+          ><img src="/images/logo.png" alt="PawfectLife Logo"
         /></a>
       </div>
       <div class="nav-links-right">
         <a th:href="@{/petsupply/dashboard}">Home</a>
         <a th:href="@{/petsupply/products}">Products</a>
         <div class="cart">
-          <a th:href="@{/cart}">
+          <a th:href="@{/petsupply/cart}">
             <i class="fas fa-shopping-cart"></i>
-            <span th:if="${cartItemCount > 0}" 
-                  th:text="${cartItemCount}"
-                  class="cart-badge"></span>
-        </a>
+            <span
+              th:if="${cartItemCount > 0}"
+              th:text="${cartItemCount}"
+              class="cart-badge"
+            ></span>
+          </a>
         </div>
         <div class="account">
           <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
@@ -48,49 +48,74 @@
     <!-- Cart Content -->
     <div class="cart-container">
       <h2>Your Shopping Cart</h2>
-      
+
       <div th:if="${cartItems.isEmpty()}">
-          <p>Your cart is empty</p>
-          <a th:href="@{/petsupply/products}" class="btn">Continue Shopping</a>
+        <p>Your cart is empty</p>
+        <a th:href="@{/petsupply/products}" class="btn">Continue Shopping</a>
       </div>
-      
+
       <div th:unless="${cartItems.isEmpty()}">
-          <div class="cart-item" th:each="entry : ${cartItems}">
-              <img th:src="@{'/images/products/' + ${entry.key.imageUrl}}" 
-                   alt="Product Image">
-              <div>
-                  <h3 th:text="${entry.key.productName}"></h3>
-                  <p th:text="'$' + ${#numbers.formatDecimal(entry.key.price, 1, 2)}"></p>
-              </div>
-              <div class="quantity-control">
-                  <form th:action="@{/cart/update}" method="post">
-                      <input type="hidden" name="productId" th:value="${entry.key.id}">
-                      <input type="hidden" name="quantity" th:value="${entry.value - 1}">
-                      <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                      <button type="submit">-</button>
-                  </form>
-                  <span th:text="${entry.value}"></span>
-                  <form th:action="@{/cart/update}" method="post">
-                      <input type="hidden" name="productId" th:value="${entry.key.id}">
-                      <input type="hidden" name="quantity" th:value="${entry.value + 1}">
-                      <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                      <button type="submit">+</button>
-                  </form>
-              </div>
-              <p th:text="'$' + ${#numbers.formatDecimal(entry.key.price * entry.value, 1, 2)}"></p>
-              <form th:action="@{'/cart/remove/' + ${entry.key.id}}" method="post">
-                  <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                  <button type="submit" class="remove-btn">
-                      <i class="fas fa-trash"></i>
-                  </button>
-              </form>
+        <div class="cart-item" th:each="entry : ${cartItems}">
+          <img
+            th:src="@{'/images/products/' + ${entry.key.imageUrl}}"
+            alt="Product Image"
+          />
+          <div>
+            <h3 th:text="${entry.key.productName}"></h3>
+            <p
+              th:text="'$' + ${#numbers.formatDecimal(entry.key.price, 1, 2)}"
+            ></p>
           </div>
-          
-          <div class="cart-total">
-              <h3>Total: <span th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}"></span></h3>
-              <a th:href="@{/checkout}" class="checkout-btn">Proceed to Checkout</a>
+          <div class="quantity-control">
+            <form th:action="@{/cart/update}" method="post">
+              <input
+                type="hidden"
+                name="productId"
+                th:value="${entry.key.id}"
+              />
+              <input
+                type="hidden"
+                name="quantity"
+                th:value="${entry.value - 1}"
+              />
+              <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+              <button type="submit">-</button>
+            </form>
+            <span th:text="${entry.value}"></span>
+            <form th:action="@{/cart/update}" method="post">
+              <input
+                type="hidden"
+                name="productId"
+                th:value="${entry.key.id}"
+              />
+              <input
+                type="hidden"
+                name="quantity"
+                th:value="${entry.value + 1}"
+              />
+              <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+              <button type="submit">+</button>
+            </form>
           </div>
+          <p
+            th:text="'$' + ${#numbers.formatDecimal(entry.key.price * entry.value, 1, 2)}"
+          ></p>
+          <form th:action="@{'/cart/remove/' + ${entry.key.id}}" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            <button type="submit" class="remove-btn">
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="cart-total">
+          <h3>
+            Total:
+            <span th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}"></span>
+          </h3>
+          <a th:href="@{/checkout}" class="checkout-btn">Proceed to Checkout</a>
+        </div>
       </div>
-  </div>
-</body>
+    </div>
+  </body>
 </html>
