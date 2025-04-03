@@ -3,24 +3,25 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   background: #f4f4f9;
+  color: #333;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #2c3e50, #3498db);
-  color: #fff;
-  padding: 1rem 2rem 0 1rem;
+  padding: 20px 5%;
+  background-color: #fed4af;
   position: fixed;
-  top: 0;
   width: 100%;
+  top: 0;
   z-index: 1000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -31,36 +32,36 @@ body {
   font-family: "Pacifico", cursive;
 }
 
-.navbar .logo a {
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.logo img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
 }
 
-.navbar .logo a:hover {
-  color: #ffcc00;
+.nav-links-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 
-.navbar .nav-links-right a {
-  color: #fff;
+.nav-links-right a {
+  color: #401607;
   text-decoration: none;
-  margin: 0 1.5rem;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 500;
-  position: relative;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.navbar .nav-links-right a:hover {
-  color: #ffcc00;
+.nav-links-right a:hover {
+  color: #F2913D;
 }
 
-.navbar .nav-links-right a.active {
+.nav-links-right a.active {
   color: #ffcc00;
   font-weight: bold;
 }
 
-.navbar .nav-links-right a::after {
+.nav-links-right a::after {
   content: "";
   position: absolute;
   width: 0;
@@ -71,30 +72,25 @@ body {
   transition: width 0.3s ease;
 }
 
-.navbar .nav-links-right a:hover::after,
-.navbar .nav-links-right a.active::after {
+.nav-links-right a:hover::after,
+.nav-links-right a.active::after {
   width: 100%;
 }
 
-.navbar .nav-links-right {
-  display: flex;
-  align-items: center;
-}
-
-.navbar .nav-links-right .cart,
-.navbar .nav-links-right .account {
+.nav-links-right .cart,
+.nav-links-right .account {
   position: relative;
   margin-left: 1.5rem;
 }
 
-.navbar .nav-links-right i {
+.nav-links-right i {
   font-size: 24px;
-  color: #fff;
+  color: #401607;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-.navbar .nav-links-right i:hover {
+.nav-links-right i:hover {
   transform: scale(1.1);
 }
 
@@ -130,15 +126,62 @@ body {
   border-radius: 5px;
 }
 
-.container {
-  background: #ffffff;
+.hero {
+  position:relative;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/app-images/homepage.png") center/cover no-repeat;
+  margin-top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  background-color: rgba(64, 22, 7, 0.8);
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: calc(100vh - 125px);
   text-align: center;
-  margin-top: 125px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-overlay h2 {
+  font-size: 2.5rem;
+  color: #F2DDB6;
+  margin-bottom: 1rem;
+}
+
+.hero-overlay p {
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #F2913D;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #A6351C;
+  transform: translateY(-2px);
 }
 
 .auth-container {
@@ -230,4 +273,15 @@ button:hover {
   height: 200px;
   background-color: #ddd;
   margin: 10px auto;
+}
+
+@media (max-width: 768px) {
+  .hero-overlay {
+      width: 90%;
+      padding: 1.5rem;
+  }
+  
+  .hero-overlay h2 {
+      font-size: 1.8rem;
+  }
 }
