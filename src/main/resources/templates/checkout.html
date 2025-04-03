@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Checkout - Pawfect Life</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a th:href="@{/dashboard}"><img src="/images/logo.png" alt="PawfectLife Logo"></a>
+        </div>
+        <div class="nav-links-right">
+            <a th:href="@{/dashboard}">Home</a>
+            <a th:href="@{/products}">Products</a>
+            <div class="cart">
+                <a th:href="@{/cart}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span th:if="${cartItemCount > 0}" th:text="${cartItemCount}" class="cart-badge"></span>
+                </a>
+            </div>
+            <div class="account">
+                <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a th:href="@{/account}">Account</a>
+                    <a th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Content -->
+    <div class="checkout-container">
+        <!-- Checkout Form -->
+        <div class="checkout-form">
+            <h2>Checkout</h2>
+            
+            <!-- Shipping Information -->
+            <form th:action="@{/checkout/process}" method="post">
+                <h3>Shipping Information</h3>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postalCode">Postal Code</label>
+                    <input type="text" id="postalCode" name="postalCode" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country" required>
+                        <option value="">Select Country</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="AU">Australia</option>
+                    </select>
+                </div>
+                
+                <h3>Payment Method</h3>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="paymentMethod" value="creditCard" checked> 
+                        Credit Card
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+                </div>
+                
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+                    </div>
+                    <div>
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-checkout">Complete Order</button>
+            </form>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            
+            <div th:each="entry : ${cartItems}">
+                <div class="cart-item">
+                    <span th:text="${entry.key.productName} + ' x ' + ${entry.value}"></span>
+                    <span th:text="'$' + ${#numbers.formatDecimal(entry.key.price * entry.value, 1, 2)}"></span>
+                </div>
+            </div>
+            
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}"></span>
+            </div>
+            
+            <div class="total-row">
+                <span>Shipping:</span>
+                <span>$5.99</span>
+            </div>
+            
+            <div class="total-row">
+                <span>Total:</span>
+                <span th:text="'$' + ${#numbers.formatDecimal(total + 5.99, 1, 2)}"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 保持与网站其他页面相同的下拉菜单功能
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = event.currentTarget.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        document.addEventListener("click", function(event) {
+            const dropdowns = document.querySelectorAll(".dropdown-menu");
+            const toggles = document.querySelectorAll(".account-toggle");
+            if (!Array.from(toggles).some(toggle => toggle.contains(event.target))) {
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = "none";
+                });
+            }
+        });
+    </script>
+</body>
+</html>

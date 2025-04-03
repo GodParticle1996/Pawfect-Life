@@ -6,8 +6,12 @@ import com.example.pawfectlife.repository.ProductRepository;
 import com.example.pawfectlife.service.UserService;
 import com.example.pawfectlife.service.CartService;
 import com.example.pawfectlife.service.ProductService;
+import com.example.pawfectlife.repository.UserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +29,8 @@ public class PetSupplyController {
     private UserService userService;
     private ProductService productService;
     private CartService cartService;
+    @Autowired
+    private UserRepository userRepository;
 
     public PetSupplyController(UserService userService,
             ProductService productService,
@@ -36,6 +42,12 @@ public class PetSupplyController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @GetMapping("/")
+    public String rootRequest(Model model) {
+        model.addAttribute("cartItemCount", cartService.getItemCount());
+        return "dashboard";
+    }
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -69,10 +81,11 @@ public class PetSupplyController {
     }
 
     @GetMapping("/account")
-    public String account(Model model) {
-        model.addAttribute("cartItemCount", cartService.getItemCount());
-        return "account";
-    }
+    public String accountPage(Model model, Principal principal) {
+    User user = userRepository.findByEmail(principal.getName());
+    model.addAttribute("userRole", user.getRole().name());
+    return "account";
+}
 
     @GetMapping("/products")
     public String products(Model model) {
@@ -82,12 +95,35 @@ public class PetSupplyController {
         return "products";
     }
 
-    @PostMapping("/cart/add")
-    public String addToCart(@RequestParam Long productId, @RequestParam(defaultValue = "1") int quantity) {
-        Product product = productService.getProductById(productId);
-        cartService.addProductWithQuantity(product, quantity); // Use the new method
-        return "redirect:/products";
+    @GetMapping("/products/{id}")
+    public String productDetail(@PathVariable Long id, Model model) {
+        try {
+            Product product = productService.getProductById(id);
+            if (product == null) {
+                return "redirect:/products?error=product_not_found";
+            }
+            
+            System.out.println("Loaded product: " + product);
+            
+            model.addAttribute("product", product);
+            model.addAttribute("cartItemCount", cartService.getItemCount());
+            return "detail";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/products?error=server_error";
+        }
     }
+
+    @PostMapping("/cart/add")
+    public String addToCart(@RequestParam Long productId, 
+                       @RequestParam(defaultValue = "1") int quantity,
+                       HttpServletRequest request) {
+    Product product = productService.getProductById(productId);
+    cartService.addProductWithQuantity(product, quantity);
+    
+    String referer = request.getHeader("Referer");
+    return "redirect:" + (referer != null ? referer : "/products");
+}
 
     @PostMapping("/cart/update")
     public String updateCart(@RequestParam Long productId, @RequestParam int quantity) {
@@ -112,10 +148,16 @@ public class PetSupplyController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(Model model) {
-        model.addAttribute("cartItems", cartService.getProductsInCart());
-        model.addAttribute("total", cartService.getTotal());
-        model.addAttribute("cartItemCount", cartService.getItemCount());
-        return "checkout";
-    }
+    public String checkout(Model model, Principal principal) {
+        if (cartService.getItemCount() == 0) {
+            return "redirect:/cart?error=empty";
+        }
+    
+    model.addAttribute("cartItems", cartService.getProductsInCart());
+    model.addAttribute("total", cartService.getTotal());
+    model.addAttribute("cartItemCount", cartService.getItemCount());
+    model.addAttribute("paymentMethods", List.of("Credit Card", "PayPal"));
+    
+    return "checkout";
+}
 }

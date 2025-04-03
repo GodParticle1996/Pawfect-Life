@@ -12,6 +12,10 @@ import java.util.Map;
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CartService {
+    public boolean validateCart() {
+        // Example implementation: Check if the cart is not empty
+        return !cart.isEmpty();
+    }
 
     private Map<Product, Integer> cart = new HashMap<>();
 

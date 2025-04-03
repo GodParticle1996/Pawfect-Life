@@ -39,7 +39,7 @@
           </a>
           <div class="dropdown-menu">
             <a th:href="@{/account}">Account</a>
-            <a th:href="@{/logout}">Logout</a>
+            <a th:href="@{/dashboard}">Logout</a>
           </div>
         </div>
       </div>
@@ -151,6 +151,12 @@
 
           // Automatically submit the form after updating the quantity
           form.submit();
+        });
+      });
+
+      document.querySelectorAll(".quantity-input").forEach((input) => {
+          input.addEventListener("change", function() {
+          this.closest("form").submit();
         });
       });
     </script>

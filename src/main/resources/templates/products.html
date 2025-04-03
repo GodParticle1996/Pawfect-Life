@@ -39,7 +39,7 @@
           </a>
           <div class="dropdown-menu">
             <a th:href="@{/account}">Account</a>
-            <a th:href="@{/logout}">Logout</a>
+            <a th:href="@{/dashboard}">Logout</a>
           </div>
         </div>
       </div>
@@ -56,13 +56,13 @@
       <p class="subtitle">Check out our latest pet supplies!</p>
 
       <div class="product-grid">
-        <div class="product-card" th:each="product : ${products}">
+        <div class="product-card" th:each="product : ${products}" 
+        th:onclick="'window.location.href=\'/products/' + ${product.id} + '\''"
+        style="cursor: pointer;">
           <div class="product-image-container">
-            <img
-              th:src="@{'/' + ${product.imageUrl}}"
-              th:alt="${product.productName} + ' image'"
-              class="product-image"
-            />
+            <img th:src="@{'/' + ${product.imageUrl}}"
+                 th:alt="${product.productName} + ' image'"
+                 class="product-image"/>
           </div>
           <div class="product-info">
             <h3 th:text="${product.productName}">Product Name</h3>
@@ -72,32 +72,29 @@
             >
               Price
             </p>
-            <form
-              th:action="@{/cart/add}"
-              method="post"
-              class="add-to-cart-form"
-            >
-              <input type="hidden" name="productId" th:value="${product.id}" />
-              <div class="quantity-selector">
-                <label for="quantity">Qty:</label>
-                <div class="quantity-control" style="border: 0px">
-                  <button type="button" class="quantity-btn minus">-</button>
-                  <input
-                    type="number"
-                    name="quantity"
-                    class="quantity-input"
-                    value="1"
-                    min="1"
-                    max="99"
-                  />
-                  <button type="button" class="quantity-btn plus">+</button>
+            <div class="add-to-cart-container">
+              <form th:action="@{/cart/add}" method="post" class="add-to-cart-form">
+                <input type="hidden" name="productId" th:value="${product.id}" />
+                <div class="quantity-selector">
+                  <label for="quantity">Qty:</label>
+                  <div class="quantity-control" style="border: 0px">
+                    <button type="button" class="quantity-btn minus">-</button>
+                    <input
+                      type="number"
+                      name="quantity"
+                      class="quantity-input"
+                      value="1"
+                      min="1"
+                      max="99"
+                    />
+                    <button type="button" class="quantity-btn plus">+</button>
+                  </div>
                 </div>
-              </div>
-              <button type="submit" class="add-to-cart">
-                <i class="fas fa-cart-plus"></i> Add to Cart
-              </button>
-            </form>
-          </div>
+                <button type="submit" class="add-to-cart">
+                  <i class="fas fa-cart-plus"></i> Add to Cart
+                </button>
+              </form>
+            </div>
         </div>
       </div>
     </div>
@@ -125,7 +122,8 @@
 
       // Quantity selector functionality
       document.querySelectorAll(".quantity-btn").forEach((button) => {
-        button.addEventListener("click", function () {
+          button.addEventListener("click", function (e) {
+          e.stopPropagation();
           const input = this.parentNode.querySelector(".quantity-input");
           const currentValue = parseInt(input.value);
 
@@ -138,9 +136,13 @@
       });
 
       // Form submission and notification
-      document.querySelectorAll(".add-to-cart-form").forEach((form) => {
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
+      document.querySelectorAll('.add-to-cart-form').forEach(form => {
+         form.addEventListener('click', e => e.stopPropagation());
+      });
+      
+        form.addEventListener("submit", function(e) {
+           e.preventDefault();
+           e.stopPropagation();
 
           const formData = new FormData(this);
           fetch(this.action, {
@@ -157,7 +159,7 @@
               const quantity = this.querySelector(".quantity-input").value;
               showNotification(`Added ${quantity} ${productName} to cart`);
 
-              // Update cart badge count (will be updated on page refresh or we can update via AJAX)
+              // Update cart badge count
               setTimeout(() => {
                 window.location.reload();
               }, 1500);
@@ -166,7 +168,7 @@
               console.error("Error:", error);
             });
         });
-      });
+      ;
 
       function showNotification(message) {
         const toast = document.getElementById("notification-toast");

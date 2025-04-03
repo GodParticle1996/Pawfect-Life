@@ -1,75 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account - Pawfect Life</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-  </head>
-  <body>
-    <!-- Navbar -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Navbar with role-based items -->
     <nav class="navbar">
-      <div class="logo">
-        <a th:href="@{/dashboard}"
-          ><img src="/images/logo.png" alt="PawfectLife Logo"
-        /></a>
-      </div>
-      <div class="nav-links-right">
-        <a th:href="@{/dashboard}">Home</a>
-        <a th:href="@{/products}">Products</a>
-        <div class="cart">
-          <a th:href="@{/cart}">
-            <i class="fas fa-shopping-cart"></i>
-            <span
-              th:if="${cartItemCount > 0}"
-              th:text="${cartItemCount}"
-              class="cart-badge"
-            ></span>
-          </a>
+        <div class="logo">
+            <a th:href="@{/dashboard}">
+                <img src="/images/logo.png" alt="PawfectLife Logo" loading="lazy">
+            </a>
         </div>
-        <div class="account">
-          <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
-            <i class="fas fa-user"></i>
-          </a>
-          <div class="dropdown-menu">
-            <a th:href="@{/account}">Account</a>
-            <a th:href="@{/logout}">Logout</a>
-          </div>
+        <div class="nav-links-right">
+            <a th:href="@{/dashboard}">Home</a>
+            <a th:href="@{/products}">Products</a>
+            
+            <!-- Admin-only link -->
+            <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+            
+            <!-- Seller-only link -->
+            <a th:href="@{/seller}" sec:authorize="hasRole('SELLER')">Seller Dashboard</a>
+            
+            <div class="cart">
+                <a th:href="@{/cart}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span th:if="${cartItemCount > 0}" th:text="${cartItemCount}" class="cart-badge"></span>
+                </a>
+            </div>
+            <div class="account">
+                <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a th:href="@{/account}">Account</a>
+                    <a th:href="@{/dashboard}">Logout</a>
+                </div>
+            </div>
         </div>
-      </div>
     </nav>
 
-    <!-- Account Content -->
+    <!-- Role-based Account Content -->
     <div class="container">
-      <h2>Account</h2>
-      <p>Manage your account details here.</p>
+        <!-- Admin Content -->
+        <div sec:authorize="hasRole('ADMIN')">
+            <h2>Admin Dashboard</h2>
+            <p>Welcome, Administrator. You have full system access.</p>
+            <div class="admin-actions">
+                <a th:href="@{/admin/users}" class="btn">Manage Users</a>
+                <a th:href="@{/admin/products}" class="btn">Manage Products</a>
+                <a th:href="@{/admin/orders}" class="btn">View All Orders</a>
+            </div>
+        </div>
+
+        <!-- USER Content (default) -->
+        <div sec:authorize="hasRole('USER')">
+            <h2>My Account</h2>
+            <p>Manage your personal information and orders.</p>
+            <div class="customer-actions">
+                <a th:href="@{/orders}" class="btn">My Orders</a>
+                <a th:href="@{/wishlist}" class="btn">Wishlist</a>
+                <a th:href="@{/settings}" class="btn">Account Settings</a>
+            </div>
+        </div>
     </div>
 
     <script>
-      function toggleDropdown(event) {
-        event.preventDefault();
-        const dropdown = event.currentTarget.nextElementSibling;
-        dropdown.style.display =
-          dropdown.style.display === "block" ? "none" : "block";
-      }
-
-      document.addEventListener("click", function (event) {
-        const dropdowns = document.querySelectorAll(".dropdown-menu");
-        const toggles = document.querySelectorAll(".account-toggle");
-        if (
-          !Array.from(toggles).some((toggle) => toggle.contains(event.target))
-        ) {
-          dropdowns.forEach((dropdown) => {
-            dropdown.style.display = "none";
-          });
+        // Improved dropdown toggle function
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = event.currentTarget.nextElementSibling;
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu !== dropdown) menu.style.display = 'none';
+            });
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
-      });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.account')) {
+                document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
     </script>
-  </body>
+</body>
 </html>
