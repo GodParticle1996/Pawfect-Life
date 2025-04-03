@@ -16,15 +16,15 @@
     <!-- Navbar -->
     <nav class="navbar">
       <div class="logo">
-        <a th:href="@{/petsupply/dashboard}"
+        <a th:href="@{/dashboard}"
           ><img src="/images/logo.png" alt="PawfectLife Logo"
         /></a>
       </div>
       <div class="nav-links-right">
-        <a th:href="@{/petsupply/dashboard}">Home</a>
-        <a th:href="@{/petsupply/products}">Products</a>
+        <a th:href="@{/dashboard}">Home</a>
+        <a th:href="@{/products}">Products</a>
         <div class="cart">
-          <a th:href="@{/petsupply/cart}">
+          <a th:href="@{/cart}">
             <i class="fas fa-shopping-cart"></i>
             <span
               th:if="${cartItemCount > 0}"

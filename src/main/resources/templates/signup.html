@@ -25,11 +25,7 @@
       <div class="auth-container">
         <h2>Sign Up</h2>
         <div th:if="${error}" class="error" th:text="${error}"></div>
-        <form
-          method="post"
-          th:action="@{/petsupply/signup}"
-          th:object="${user}"
-        >
+        <form method="post" th:action="@{/signup}" th:object="${user}">
           <div class="form-group">
             <label style="font-weight: 600">Email</label>
             <input type="email" th:field="*{email}" required />
@@ -52,7 +48,7 @@
         </form>
         <!-- Redirect to Login Page -->
         <p class="login-link">
-          Already have an account? <a th:href="@{/petsupply/login}">Login</a>
+          Already have an account? <a th:href="@{/login}">Login</a>
         </p>
       </div>
     </div>

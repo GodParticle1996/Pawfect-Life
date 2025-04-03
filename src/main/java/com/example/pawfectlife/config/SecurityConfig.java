@@ -37,20 +37,20 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
-                                "/petsupply/login",
-                                "/petsupply/signup",
+                                "/login",
+                                "/signup",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
-                        .loginPage("/petsupply/login")
-                        .defaultSuccessUrl("/petsupply/dashboard")
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/petsupply/logout")
-                        .logoutSuccessUrl("/petsupply/login?logout")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll());
         return http.build();
     }

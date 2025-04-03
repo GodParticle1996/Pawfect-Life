@@ -17,25 +17,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/petsupply")
 public class PetSupplyController {
 
     private UserService userService;
     private ProductService productService;
     private CartService cartService;
-    
-    public PetSupplyController(UserService userService, 
-                             ProductService productService,
-                             CartService cartService) {
+
+    public PetSupplyController(UserService userService,
+            ProductService productService,
+            CartService cartService) {
         this.userService = userService;
         this.productService = productService;
         this.cartService = cartService;
     }
-    
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -77,25 +75,25 @@ public class PetSupplyController {
     }
 
     @GetMapping("/products")
-        public String products(Model model) {
-        List<Product> products = productRepository.findAll(); 
+    public String products(Model model) {
+        List<Product> products = productRepository.findAll();
         model.addAttribute("products", products);
         return "products";
     }
 
     @PostMapping("/cart/add")
     public String addToCart(@RequestParam Long productId) {
-    Product product = productService.getProductById(productId);
-    cartService.addProduct(product);
-    return "redirect:/petsupply/products";
+        Product product = productService.getProductById(productId);
+        cartService.addProduct(product);
+        return "redirect:/products";
     }
 
     @GetMapping("/cart")
     public String showCart(Model model) {
-    model.addAttribute("cartItems", cartService.getProductsInCart());
-    model.addAttribute("total", cartService.getTotal());
-    model.addAttribute("cartItemCount", cartService.getItemCount());
-    return "cart";
+        model.addAttribute("cartItems", cartService.getProductsInCart());
+        model.addAttribute("total", cartService.getTotal());
+        model.addAttribute("cartItemCount", cartService.getItemCount());
+        return "cart";
     }
 
     @PostMapping("/cart/remove/{productId}")
