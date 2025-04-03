@@ -67,7 +67,8 @@
             >
             Price
           </p>
-          <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post">
+          <form th:action="@{/cart/add}" method="post">
+            <input type="hidden" name="productId" th:value="${product.id}" />
             <button class="add-to-cart">
               <i class="fas fa-cart-plus"></i> Add to Cart
             </button>
