@@ -16,15 +16,49 @@ public class CartService {
     private Map<Product, Integer> cart = new HashMap<>();
 
     public void addProduct(Product product) {
-        if (cart.containsKey(product)) {
-            cart.put(product, cart.get(product) + 1);
+        // Find if a product with the same ID already exists in the cart
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            // If the product exists, update its quantity
+            int newQuantity = cart.get(existingProduct) + 1;
+            cart.put(existingProduct, newQuantity);
         } else {
+            // If the product doesn't exist, add it with quantity 1
             cart.put(product, 1);
         }
     }
 
+    public void addProductWithQuantity(Product product, int quantity) {
+        // Find if a product with the same ID already exists in the cart
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            // If the product exists, update its quantity
+            int newQuantity = cart.get(existingProduct) + quantity;
+            cart.put(existingProduct, newQuantity);
+        } else {
+            // If the product doesn't exist, add it with the specified quantity
+            cart.put(product, quantity);
+        }
+    }
+
     public void removeProduct(Product product) {
-        cart.remove(product);
+        // Find the product with the same ID
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            cart.remove(existingProduct);
+        }
     }
 
     public Map<Product, Integer> getProductsInCart() {
@@ -46,6 +80,18 @@ public class CartService {
     }
 
     public void updateProductQuantity(Product product, int quantity) {
-        cart.put(product, quantity);
+        // Find the product with the same ID
+        Product existingProduct = cart.keySet().stream()
+                .filter(p -> p.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingProduct != null) {
+            if (quantity <= 0) {
+                cart.remove(existingProduct);
+            } else {
+                cart.put(existingProduct, quantity);
+            }
+        }
     }
 }

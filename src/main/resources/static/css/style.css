@@ -505,6 +505,7 @@ button:hover {
 }
 
 .quantity-control {
+  border: 0px;
   display: flex;
   align-items: center;
   border: 1px solid #ddd;
@@ -634,4 +635,45 @@ button:hover {
   font-size: 1.1rem;
   color: #666;
   margin-bottom: 30px;
+}
+
+.cart-item .quantity-control form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.cart-item .quantity-control .quantity-input {
+  width: 50px;
+  height: 30px;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  text-align: center;
+  padding: 0;
+  -moz-appearance: textfield;
+}
+
+.cart-item .quantity-control .quantity-input::-webkit-outer-spin-button,
+.cart-item .quantity-control .quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cart-item .quantity-control .quantity-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: #f4f4f9;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.cart-item .quantity-control .quantity-btn:hover {
+  background: #e0e0e0;
 }

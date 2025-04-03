@@ -16,9 +16,9 @@
     <!-- Navbar -->
     <nav class="navbar">
       <div class="logo">
-        <a th:href="@{/dashboard}"
-          ><img src="/images/logo.png" alt="PawfectLife Logo"
-        /></a>
+        <a th:href="@{/dashboard}">
+          <img src="/images/logo.png" alt="PawfectLife Logo" />
+        </a>
       </div>
       <div class="nav-links-right">
         <a th:href="@{/dashboard}">Home</a>
@@ -56,7 +56,6 @@
 
       <div th:unless="${cartItems.isEmpty()}">
         <div class="cart-item" th:each="entry : ${cartItems}">
-          <!-- In cart.html, change this line -->
           <img th:src="@{'/' + ${entry.key.imageUrl}}" alt="Product Image" />
           <div>
             <h3 th:text="${entry.key.productName}"></h3>
@@ -64,35 +63,35 @@
               th:text="'$' + ${#numbers.formatDecimal(entry.key.price, 1, 2)}"
             ></p>
           </div>
-          <div class="quantity-control">
+          <div class="quantity-control" style="border: 0">
             <form th:action="@{/cart/update}" method="post">
               <input
                 type="hidden"
                 name="productId"
                 th:value="${entry.key.id}"
               />
+              <button
+                type="button"
+                class="quantity-btn minus"
+                style="margin: 0 4px"
+              >
+                -
+              </button>
               <input
-                type="hidden"
+                type="number"
                 name="quantity"
-                th:value="${entry.value - 1}"
+                th:value="${entry.value}"
+                class="quantity-input"
+                min="0"
               />
+              <button
+                type="button"
+                class="quantity-btn plus"
+                style="margin: 0 4px"
+              >
+                +
+              </button>
               <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-              <button type="submit">-</button>
-            </form>
-            <span th:text="${entry.value}"></span>
-            <form th:action="@{/cart/update}" method="post">
-              <input
-                type="hidden"
-                name="productId"
-                th:value="${entry.key.id}"
-              />
-              <input
-                type="hidden"
-                name="quantity"
-                th:value="${entry.value + 1}"
-              />
-              <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-              <button type="submit">+</button>
             </form>
           </div>
           <p
@@ -115,5 +114,45 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // Dropdown toggle functionality
+      function toggleDropdown(event) {
+        event.preventDefault();
+        const dropdown = event.currentTarget.nextElementSibling;
+        dropdown.style.display =
+          dropdown.style.display === "block" ? "none" : "block";
+      }
+
+      document.addEventListener("click", function (event) {
+        const dropdowns = document.querySelectorAll(".dropdown-menu");
+        const toggles = document.querySelectorAll(".account-toggle");
+        if (
+          !Array.from(toggles).some((toggle) => toggle.contains(event.target))
+        ) {
+          dropdowns.forEach((dropdown) => {
+            dropdown.style.display = "none";
+          });
+        }
+      });
+
+      // Quantity selector functionality
+      document.querySelectorAll(".quantity-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const form = this.closest("form");
+          const input = this.parentNode.querySelector(".quantity-input");
+          const currentValue = parseInt(input.value);
+
+          if (this.classList.contains("plus")) {
+            input.value = currentValue + 1;
+          } else if (this.classList.contains("minus")) {
+            input.value = Math.max(currentValue - 1, 0);
+          }
+
+          // Automatically submit the form after updating the quantity
+          form.submit();
+        });
+      });
+    </script>
   </body>
 </html>

@@ -85,13 +85,15 @@ public class PetSupplyController {
     @PostMapping("/cart/add")
     public String addToCart(@RequestParam Long productId, @RequestParam(defaultValue = "1") int quantity) {
         Product product = productService.getProductById(productId);
-
-        // Add the product with the specified quantity
-        for (int i = 0; i < quantity; i++) {
-            cartService.addProduct(product);
-        }
-
+        cartService.addProductWithQuantity(product, quantity); // Use the new method
         return "redirect:/products";
+    }
+
+    @PostMapping("/cart/update")
+    public String updateCart(@RequestParam Long productId, @RequestParam int quantity) {
+        Product product = productService.getProductById(productId);
+        cartService.updateProductQuantity(product, quantity);
+        return "redirect:/cart";
     }
 
     @GetMapping("/cart")
@@ -115,17 +117,5 @@ public class PetSupplyController {
         model.addAttribute("total", cartService.getTotal());
         model.addAttribute("cartItemCount", cartService.getItemCount());
         return "checkout";
-    }
-
-    @PostMapping("/cart/update")
-    public String updateCart(@RequestParam Long productId, @RequestParam int quantity) {
-        Product product = productService.getProductById(productId);
-        if (quantity <= 0) {
-            cartService.removeProduct(product);
-        } else {
-            // You'll need to add this method to CartService
-            cartService.updateProductQuantity(product, quantity);
-        }
-        return "redirect:/cart";
     }
 }
