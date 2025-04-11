@@ -1,92 +1,108 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Product Detail</title>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        />
-        <link rel="stylesheet" th:href="@{/css/style.css}" />
-      </head>
-      <body class="detail-page">
-        <!-- Navbar -->
-        <nav class="navbar">
-          <div class="logo">
-            <a th:href="@{/dashboard}">
-              <img src="/images/logo.png" alt="PawfectLife Logo" />
-            </a>
-          </div>
-          <div class="nav-links-right">
-            <a th:href="@{/dashboard}">Home</a>
-            <a th:href="@{/products}">Products</a>
-            <div class="cart">
-              <a th:href="@{/cart}">
-                <i class="fas fa-shopping-cart"></i>
-                <span
-                  th:if="${cartItemCount > 0}"
-                  th:text="${cartItemCount}"
-                  class="cart-badge"
-                ></span>
-              </a>
-            </div>
-            <div class="account">
-              <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
-                <i class="fas fa-user"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a th:href="@{/account}">Account</a>
-                <a th:href="@{/dashboard}">Logout</a>
-              </div>
-            </div>
-          </div>
-        </nav>
-    
-    <div class="detail-container">
-        <div class="detail-image">
-            <img th:src="@{'/' + ${product.imageUrl}}" 
-                 th:alt="${product.productName} + ' image'"/>
+  <head>
+    <title>Product Detail</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body class="detail-page">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <a th:href="@{/dashboard}">
+          <img src="/images/logo.png" alt="PawfectLife Logo" />
+        </a>
+      </div>
+      <div class="nav-links-right">
+        <a th:href="@{/dashboard}">Home</a>
+        <a th:href="@{/products}">Products</a>
+        <div class="cart">
+          <a th:href="@{/cart}">
+            <i class="fas fa-shopping-cart"></i>
+            <span
+              th:if="${cartItemCount > 0}"
+              th:text="${cartItemCount}"
+              class="cart-badge"
+            ></span>
+          </a>
         </div>
-        <div class="detail-info">
-            <h1 th:text="${product.productName}">Product Name</h1>
-            <p class="price" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$0.00</p>
-            <p class="description" th:text="${product.description}">Product description...</p>
-            
-            <form th:action="@{/cart/add}" method="post">
-                <input type="hidden" name="productId" th:value="${product.id}"/>
-                <input type="hidden" name="stayOnPage" value="true"/>
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                <button type="submit" class="add-to-cart">
-                    <i class="fas fa-cart-plus"></i> Add to Cart
-                </button>
-            </form>
-            
-            <button class="back-button" onclick="goBack()" style="margin-bottom: 20px;">
-              <i class="fas fa-arrow-left"></i> Back
-            </button>
+        <div class="account">
+          <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-user"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a th:href="@{/account}">Account</a>
+            <a th:href="@{/dashboard}">Logout</a>
+          </div>
         </div>
-    </div>
-</body>
-<script>
-  function goBack() {
-    if (document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
-      window.history.back();
-    } else {
-      window.location.href = '/products';
-    }
-  }
-  
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      goBack();
-    }
-  });
-</script>
+      </div>
+    </nav>
 
-<footer class="company-footer">
+    <div class="detail-container">
+      <div class="detail-image">
+        <img
+          th:src="@{'/' + ${product.imageUrl}}"
+          th:alt="${product.productName} + ' image'"
+        />
+      </div>
+      <div class="detail-info">
+        <h1 th:text="${product.productName}">Product Name</h1>
+        <p
+          class="price"
+          th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"
+        >
+          $0.00
+        </p>
+        <p class="description" th:text="${product.description}">
+          Product description...
+        </p>
+
+        <form th:action="@{/cart/add}" method="post">
+          <input type="hidden" name="productId" th:value="${product.id}" />
+          <input type="hidden" name="stayOnPage" value="true" />
+          <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+          <button type="submit" class="add-to-cart">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>
+        </form>
+
+        <button
+          class="back-button"
+          onclick="goBack()"
+          style="margin-bottom: 20px"
+        >
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+      </div>
+    </div>
+  </body>
+  <script>
+    function goBack() {
+      if (
+        document.referrer &&
+        document.referrer.indexOf(window.location.host) !== -1
+      ) {
+        window.history.back();
+      } else {
+        window.location.href = "/products";
+      }
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        goBack();
+      }
+    });
+  </script>
+
+  <footer class="company-footer">
     <div class="footer-content">
       <p>© 2025 Pawfect Life. All Rights Reserved</p>
       <p>PROG8610 - Developing Web Applications</p>

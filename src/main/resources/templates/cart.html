@@ -63,20 +63,14 @@
               th:text="'$' + ${#numbers.formatDecimal(entry.key.price, 1, 2)}"
             ></p>
           </div>
-          <div class="quantity-control" style="border: 0">
+          <div class="quantity-control">
             <form th:action="@{/cart/update}" method="post">
               <input
                 type="hidden"
                 name="productId"
                 th:value="${entry.key.id}"
               />
-              <button
-                type="button"
-                class="quantity-btn minus"
-                style="margin: 0 4px"
-              >
-                -
-              </button>
+              <button type="button" class="quantity-btn minus">-</button>
               <input
                 type="number"
                 name="quantity"
@@ -84,13 +78,7 @@
                 class="quantity-input"
                 min="0"
               />
-              <button
-                type="button"
-                class="quantity-btn plus"
-                style="margin: 0 4px"
-              >
-                +
-              </button>
+              <button type="button" class="quantity-btn plus">+</button>
               <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
             </form>
           </div>
@@ -155,7 +143,7 @@
       });
 
       document.querySelectorAll(".quantity-input").forEach((input) => {
-          input.addEventListener("change", function() {
+        input.addEventListener("change", function () {
           this.closest("form").submit();
         });
       });
