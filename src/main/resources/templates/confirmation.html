@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Confirmation - Pawfect Life</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a th:href="@{/dashboard}"><img src="/images/logo.png" alt="PawfectLife Logo" /></a>
+        </div>
+        <div class="nav-links-right">
+            <a th:href="@{/dashboard}">Home</a>
+            <a th:href="@{/products}">Products</a>
+            <div class="cart">
+                <a th:href="@{/cart}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span th:if="${cartItemCount > 0}" th:text="${cartItemCount}" class="cart-badge"></span>
+                </a>
+            </div>
+            <div class="account">
+                <a href="#" class="account-toggle" onclick="toggleDropdown(event)">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a th:href="@{/account}">Account</a>
+                    <a th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Order Confirmation Content -->
+    <div class="confirmation-container">
+        <h2>Order Confirmation</h2>
+        <p>Thank you for your order!</p>
+        <p>Your order number is: <strong th:text="${orderId}"></strong></p>
+        <p>Total amount: <strong th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}"></strong></p>
+        <p>We will process your order shortly.</p>
+        <a th:href="@{/dashboard}" class="btn">Back to Home</a>
+    </div>
+
+    <!-- JavaScript for Dropdown -->
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = event.currentTarget.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        document.addEventListener("click", function (event) {
+            const dropdowns = document.querySelectorAll(".dropdown-menu");
+            const toggles = document.querySelectorAll(".account-toggle");
+            if (!Array.from(toggles).some(toggle => toggle.contains(event.target))) {
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = "none";
+                });
+            }
+        });
+    </script>
+
+    <footer class="company-footer">
+        <div class="footer-content">
+            <p>© 2025 Pawfect Life. All Rights Reserved</p>
+            <p>PROG8610 - Developing Web Applications</p>
+            <p>Group #2: Vibek Dutta, Chunxi Zhang</p>
+            <p>Student ID: 8890720, 8971818</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -159,5 +159,24 @@ public class PetSupplyController {
     model.addAttribute("paymentMethods", List.of("Credit Card", "PayPal"));
     
     return "checkout";
-}
+    }
+
+    @PostMapping("/checkout/process")
+    public String processCheckout(@RequestParam String fullName,
+                                  @RequestParam String address,
+                                  @RequestParam String city,
+                                  @RequestParam String postalCode,
+                                  @RequestParam String country,
+                                  @RequestParam String cardNumber,
+                                  @RequestParam String expiryDate,
+                                  @RequestParam String cvv,
+                                  Principal principal,
+                                  Model model) {
+                                    String orderId = "ORD-" + System.currentTimeMillis();
+                                    double total = cartService.getTotal() + 5.99;
+                                    cartService.clearCart();
+                                    model.addAttribute("orderId", orderId);
+                                    model.addAttribute("total", total);
+                                    return "confirmation";
+    }                                
 }

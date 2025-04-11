@@ -11,6 +11,9 @@ body {
   color: #333;
   min-height: 100vh;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
 .main-content {
@@ -1255,4 +1258,42 @@ h3 {
   margin-right: 8px;
   color: #f2913d;
   font-size: 1rem;
+}
+
+.confirmation-container {
+  max-width: 600px;
+  margin: 250px auto 50px;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.confirmation-container h2 {
+  font-size: 2rem;
+  color: #401607;
+  margin-bottom: 20px;
+}
+
+.confirmation-container p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.confirmation-container .btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #f2913d;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.confirmation-container .btn:hover {
+  background: #a6351c;
+  transform: translateY(-2px);
 }
